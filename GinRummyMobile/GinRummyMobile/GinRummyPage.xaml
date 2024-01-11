@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GinRummyMobile.GinRummyPage">
+    <ContentPage.Content>
+        <StackLayout Margin="20">
+            <Label x:Name="PlayerLabel" Text="Player 1's Turn" />
+
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Image x:Name ="DeckImg" Source="back.png"
+                       Grid.Row="0" Grid.Column="0">
+                    <!--HorizontalOptions="Center"-->
+                    <Image.GestureRecognizers>
+                        <DragGestureRecognizer DragStarting="DragDeck"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image x:Name="DiscardImg" Source="empty.png"
+                       Grid.Row="0" Grid.Column="1">
+                    <!--HorizontalOptions="Center"-->
+                    <Image.GestureRecognizers>
+                        <DragGestureRecognizer DragStarting="DragDiscard"/>
+                        <DropGestureRecognizer Drop="DropDiscard" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+
+            <StackLayout Orientation="Vertical">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Image x:Name="HandImg0" Source="empty.png">
+                        <!--Grid.Row="0" Grid.Column="0">-->
+                        <!--HorizontalOptions="Center"-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand0"/>
+                            <DropGestureRecognizer Drop="DropHand0" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg1" Source="empty.png">
+                        <!--Grid.Row="0" Grid.Column="1">-->
+                        <!--HorizontalOptions="Center"-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand1"/>
+                            <DropGestureRecognizer Drop="DropHand1" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg2" Source="empty.png">
+                        <!--Grid.Row="0" Grid.Column="2">-->
+                        <!--HorizontalOptions="Center"-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand2"/>
+                            <DropGestureRecognizer Drop="DropHand2" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg3" Source="empty.png">
+                        <!--Grid.Row="0" Grid.Column="3">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand3"/>
+                            <DropGestureRecognizer Drop="DropHand3" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Image x:Name="HandImg4" Source="empty.png">
+                        <!--Grid.Row="1" Grid.Column="0">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand4"/>
+                            <DropGestureRecognizer Drop="DropHand4" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg5" Source="empty.png">
+                        <!--Grid.Row="1" Grid.Column="1">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand5"/>
+                            <DropGestureRecognizer Drop="DropHand5" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg6" Source="empty.png">
+                        <!--Grid.Row="1" Grid.Column="2">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand6"/>
+                            <DropGestureRecognizer Drop="DropHand6" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Image x:Name="HandImg7" Source="empty.png">
+                        <!--Grid.Row="1" Grid.Column="3">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand7"/>
+                            <DropGestureRecognizer Drop="DropHand7" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg8" Source="empty.png">
+                        <!--Grid.Row="2" Grid.Column="0">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand8"/>
+                            <DropGestureRecognizer Drop="DropHand8" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg9" Source="empty.png">
+                        <!--Grid.Row="2" Grid.Column="1">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand9"/>
+                            <DropGestureRecognizer Drop="DropHand9" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="HandImg10" Source="empty.png" IsVisible="False">
+                        <!--Grid.Row="2" Grid.Column="2">-->
+                        <Image.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragHand10"/>
+                            <DropGestureRecognizer Drop="DropHand10" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+            </StackLayout>
+            <Label x:Name="MeldsLabel" Text="" />
+            <Label x:Name="GameStateLabel" Text="" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
