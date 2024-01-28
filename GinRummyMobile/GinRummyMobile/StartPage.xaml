@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GinRummyMobile.StartPage"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="false">
+    <ContentPage.Content>
+        <Grid>
+
+
+            <StackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Player 1 Name:"/>
+                    <Entry x:Name="Player1Name" Text="Player 1"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Player 2 Name:"/>
+                    <Entry x:Name="Player2Name" Text="Player 2"/>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout VerticalOptions="End">
+                <Button x:Name="StartGameButton" Text="Start Game" Clicked="OnStartGameButtonClicked" VerticalOptions="EndAndExpand"/>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

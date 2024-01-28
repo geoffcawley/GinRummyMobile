@@ -10,14 +10,25 @@ using Xamarin.Forms.Xaml;
 
 namespace GinRummyMobile
 {
+    public enum TurnPhase
+    {
+        Start = 0,
+        Draw = 1,
+        Discard = 2,
+        End = 3,
+        Finished = 4,
+    };
+
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GinRummyPage : ContentPage
     {
-        Deck stock = new Deck();
-        Deck discard = new Deck();
+        //Deck stock = new Deck();
+        //Deck discard = new Deck();
         Card activeCard;
 
-        Hand hand = new Hand();
+        //Hand hand = new Hand();
+
+        TurnPhase TurnPhase = TurnPhase.Start;
 
         string cardSource = "";
         int activeHandIndex = -1;
@@ -26,13 +37,9 @@ namespace GinRummyMobile
         public GinRummyPage()
         {
             InitializeComponent();
-            stock.Shuffle();
-            discard.Cards.Clear();
-            for (int i = 0; i < 10; i++)
-            {
-                hand.Cards.Add(stock.Draw());
-            }
+            Game.StartNewGame();
             RefreshHandImages();
+            RefreshLabels();
         }
 
         private void ClearActiveCard()
@@ -45,57 +52,109 @@ namespace GinRummyMobile
 
         private void RefreshLabels()
         {
-            if (GinRummy.HasGin(hand))
+            PlayerLabel.Text = $"{Game.Players[Game.ActivePlayer].Name}";
+            if (GinRummy.HasGin(Game.Players[Game.ActivePlayer].Hand))
             {
                 GameStateLabel.Text = "Gin Rummy!";
+            }
+
+            if (TurnPhase == TurnPhase.End)
+            {
+                TurnPhaseLabel.Text = "End Your Turn";
+                StartTurnButton.IsVisible = false;
+                EndTurnButton.IsVisible = true;
+            }
+            else if (TurnPhase == TurnPhase.Draw)
+            {
+                if (Game.Discard.Cards.Count > 0)
+                {
+                    TurnPhaseLabel.Text = "Draw from Stock or Discard Pile";
+                }
+                else
+                {
+                    TurnPhaseLabel.Text = "Draw from Stock";
+                }
+                StartTurnButton.IsVisible = false;
+                EndTurnButton.IsVisible = false;
+            }
+            else if (TurnPhase == TurnPhase.Discard)
+            {
+                TurnPhaseLabel.Text = "Discard a card";
+                StartTurnButton.IsVisible = false;
+                EndTurnButton.IsVisible = false;
+            }
+            else if (TurnPhase == TurnPhase.Start)
+            {
+                TurnPhaseLabel.Text = $"{Game.Players[Game.ActivePlayer].Name} Start";
+                StartTurnButton.IsVisible = true;
+                EndTurnButton.IsVisible = false;
             }
         }
 
         private void RefreshHandImages()
         {
+            StockLabel.Text = $"Stock ({Game.Stock.Cards.Count})";
 
-            HandImg0.Source = $"card{hand.Cards[0].Index}.png";
-            HandImg1.Source = $"card{hand.Cards[1].Index}.png";
-            HandImg2.Source = $"card{hand.Cards[2].Index}.png";
-            HandImg3.Source = $"card{hand.Cards[3].Index}.png";
-            HandImg4.Source = $"card{hand.Cards[4].Index}.png";
-            HandImg5.Source = $"card{hand.Cards[5].Index}.png";
-            HandImg6.Source = $"card{hand.Cards[6].Index}.png";
-            HandImg7.Source = $"card{hand.Cards[7].Index}.png";
-            HandImg8.Source = $"card{hand.Cards[8].Index}.png";
-            HandImg9.Source = $"card{hand.Cards[9].Index}.png";
-
-            if (hand.Cards.Count > 10)
+            if (TurnPhase != TurnPhase.Start)
             {
-                HandImg10.IsVisible = true;
-                HandImg10.Source = $"card{hand.Cards[10].Index}.png";
+                HandImg0.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[0].Index}.png";
+                HandImg1.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[1].Index}.png";
+                HandImg2.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[2].Index}.png";
+                HandImg3.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[3].Index}.png";
+                HandImg4.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[4].Index}.png";
+                HandImg5.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[5].Index}.png";
+                HandImg6.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[6].Index}.png";
+                HandImg7.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[7].Index}.png";
+                HandImg8.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[8].Index}.png";
+                HandImg9.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[9].Index}.png";
+
+                if (Game.Players[Game.ActivePlayer].Hand.Cards.Count > 10)
+                {
+                    HandImg10.IsVisible = true;
+                    HandImg10.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[10].Index}.png";
+                }
+                else
+                {
+                    HandImg10.IsVisible = false;
+                    HandImg10.Source = $"empty.png";
+                }
             }
             else
             {
+                HandImg0.Source = $"back.png";
+                HandImg1.Source = $"back.png";
+                HandImg2.Source = $"back.png";
+                HandImg3.Source = $"back.png";
+                HandImg4.Source = $"back.png";
+                HandImg5.Source = $"back.png";
+                HandImg6.Source = $"back.png";
+                HandImg7.Source = $"back.png";
+                HandImg8.Source = $"back.png";
+                HandImg9.Source = $"back.png";
                 HandImg10.IsVisible = false;
-                HandImg10.Source = $"empty.png";
+                HandImg10.Source = $"back.png";
             }
         }
 
         private void DragDeck(object sender, DragStartingEventArgs e)
         {
-            if (stock.Cards.Count == 0)
+            if (Game.Stock.Cards.Count == 0)
             {
                 return;
             }
             cardSource = "deck";
-            activeCard = stock.TopCard;
+            activeCard = Game.Stock.TopCard;
             e.Data.Text = activeCard.ToString();
         }
 
         private void DragDiscard(object sender, DragStartingEventArgs e)
         {
-            if (discard.Cards.Count == 0)
+            if (Game.Discard.Cards.Count == 0)
             {
                 return;
             }
             cardSource = "discard";
-            activeCard = discard.TopCard;
+            activeCard = Game.Discard.TopCard;
             e.Data.Text = activeCard.ToString();
         }
 
@@ -108,11 +167,12 @@ namespace GinRummyMobile
             }
             else if (cardSource == "hand")
             {
-                if (hand.Cards.Count > 10)
+                if (Game.Players[Game.ActivePlayer].Hand.Cards.Count > 10)
                 {
-                    hand.Cards.Remove(activeCard);
-                    discard.Cards.Add(activeCard);
+                    Game.Players[Game.ActivePlayer].Hand.Cards.Remove(activeCard);
+                    Game.Discard.Cards.Add(activeCard);
                     DiscardImg.Source = $"card{activeCard.Index}.png";
+                    TurnPhase = TurnPhase.End;
                     ClearActiveCard();
                     RefreshHandImages();
                 }
@@ -122,11 +182,11 @@ namespace GinRummyMobile
 
         private bool DragHand(int handIndex)
         {
-            if (handIndex >= hand.Cards.Count) { return false; }
+            if (handIndex >= Game.Players[Game.ActivePlayer].Hand.Cards.Count) { return false; }
             cardSource = "hand";
-            activeCard = hand.Cards[handIndex];
+            activeCard = Game.Players[Game.ActivePlayer].Hand.Cards[handIndex];
             activeHandIndex = handIndex;
-            activeCardIndex = hand.Cards[handIndex].Index;
+            activeCardIndex = Game.Players[Game.ActivePlayer].Hand.Cards[handIndex].Index;
             return true;
         }
 
@@ -134,16 +194,17 @@ namespace GinRummyMobile
         {
             if (cardSource == "deck")
             {
-                if (hand.Cards.Count > 10 || stock.Cards.Count <= 0)
+                if (Game.Players[Game.ActivePlayer].Hand.Cards.Count > 10 || Game.Stock.Cards.Count <= 0 || TurnPhase != TurnPhase.Draw)
                 {
                     ClearActiveCard();
                     return false;
                 }
-                hand.Cards.Insert(handIndex, stock.Draw());
+                Game.Players[Game.ActivePlayer].Hand.Cards.Insert(handIndex, Game.Stock.Draw());
+                TurnPhase = TurnPhase.Discard;
                 ClearActiveCard();
                 RefreshHandImages();
                 RefreshLabels();
-                if (stock.Cards.Count == 0)
+                if (Game.Stock.Cards.Count == 0)
                 {
                     DeckImg.Source = "empty.png";
                 }
@@ -151,34 +212,35 @@ namespace GinRummyMobile
             }
             else if (cardSource == "discard")
             {
-                if (hand.Cards.Count > 10 || discard.Cards.Count <= 0)
+                if (Game.Players[Game.ActivePlayer].Hand.Cards.Count > 10 || Game.Discard.Cards.Count <= 0 || TurnPhase != TurnPhase.Draw)
                 {
                     ClearActiveCard();
                     return false;
                 }
-                hand.Cards.Insert(handIndex, discard.Draw());
+                Game.Players[Game.ActivePlayer].Hand.Cards.Insert(handIndex, Game.Discard.Draw());
+                TurnPhase = TurnPhase.Discard;
                 ClearActiveCard();
                 RefreshHandImages();
                 RefreshLabels();
-                if (discard.Cards.Count == 0)
+                if (Game.Discard.Cards.Count == 0)
                 {
                     DiscardImg.Source = "empty.png";
                 }
                 else
                 {
-                    DiscardImg.Source = $"card{discard.TopCard.Index}.png";
+                    DiscardImg.Source = $"card{Game.Discard.TopCard.Index}.png";
                 }
                 return true;
             }
             else if (cardSource == "hand")
             {
                 int i = handIndex;
-                if (i >= hand.Cards.Count)
+                if (i >= Game.Players[Game.ActivePlayer].Hand.Cards.Count)
                 {
-                    i = hand.Cards.Count - 1;
+                    i = Game.Players[Game.ActivePlayer].Hand.Cards.Count - 1;
                 }
-                hand.Cards.Remove(activeCard);
-                hand.Cards.Insert(i, activeCard);
+                Game.Players[Game.ActivePlayer].Hand.Cards.Remove(activeCard);
+                Game.Players[Game.ActivePlayer].Hand.Cards.Insert(i, activeCard);
                 ClearActiveCard();
                 RefreshHandImages();
                 RefreshLabels();
@@ -186,6 +248,27 @@ namespace GinRummyMobile
             }
             ClearActiveCard();
             return false;
+        }
+
+        async void OnStartTurnButtonClicked(object sender, EventArgs e)
+        {
+            TurnPhase = TurnPhase.Draw;
+            RefreshHandImages();
+            RefreshLabels();
+        }
+
+        async void OnEndTurnButtonClicked(object sender, EventArgs e)
+        {
+            if (Game.ActivePlayer == 0) Game.ActivePlayer = 1;
+            else Game.ActivePlayer = 0;
+            TurnPhase = TurnPhase.Start;
+            RefreshHandImages();
+            RefreshLabels();
+        }
+
+        async void OnNewGameButtonClicked(object sender, EventArgs e)
+        {
+            Game.StartNewGame();
         }
 
         #region HandEventHandlers
