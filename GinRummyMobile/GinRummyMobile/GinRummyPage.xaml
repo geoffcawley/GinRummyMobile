@@ -3,17 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GinRummyMobile.GinRummyPage"
              Shell.NavBarIsVisible="False"
-             NavigationPage.HasNavigationBar="false">
+             NavigationPage.HasNavigationBar="false"
+             BackgroundColor="#198137">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout VerticalOptions="FillAndExpand">
-                <Label x:Name="PlayerLabel" Text="Player 1's Turn" HorizontalOptions="Center"/>
-                <Label x:Name="TurnPhaseLabel" Text="Draw from Stock or Discard Pile" HorizontalOptions="Center"/>
+                <Label x:Name="PlayerLabel" Text="Player 1's Turn" HorizontalOptions="Center" FontAttributes="Bold" TextColor="AntiqueWhite"/>
+                <Label x:Name="LastTurnResultLabel" Text="" HorizontalOptions="Center" FontAttributes="Bold" TextColor="AntiqueWhite"/>
             </StackLayout>
 
             <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10">
-                    <Label x:Name="StockLabel" Text="Stock (32)" VerticalOptions="Center" />
+                    <Label x:Name="StockLabel" Text="Stock (32)" VerticalOptions="Center"  FontAttributes="Bold" TextColor="AntiqueWhite"/>
                     <Image x:Name ="DeckImg" Source="back.png">
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragDeck"/>
@@ -25,7 +26,7 @@
                             <DropGestureRecognizer Drop="DropDiscard" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label Text="Discard" VerticalOptions="Center" />
+                    <Label Text="Discard" VerticalOptions="Center"  FontAttributes="Bold" TextColor="AntiqueWhite"/>
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
@@ -116,14 +117,15 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout VerticalOptions="FillAndExpand">
-                <Label x:Name="MeldsLabel" Text="" />
-                <Label x:Name="GameStateLabel" Text="" />
-                <Button x:Name="StartTurnButton" Text="Start Turn" IsVisible="True" Clicked="OnStartTurnButtonClicked"/>
-                <Button x:Name="EndTurnButton" Text="End Turn" IsVisible="False" Clicked="OnEndTurnButtonClicked"/>
+                <Label x:Name="TurnPhaseLabel" Text="Draw from Stock or Discard Pile" HorizontalOptions="Center" FontAttributes="Bold" TextColor="AntiqueWhite"/>
+                <Label x:Name="MeldsLabel" Text=""  HorizontalOptions="Center" FontAttributes="Bold" TextColor="AntiqueWhite"/>
+                <Label x:Name="GameStateLabel" Text=""  HorizontalOptions="Center" FontAttributes="Bold" TextColor="AntiqueWhite"/>
+                <Button x:Name="StartTurnButton" Text="Start Turn" IsVisible="True"  HorizontalOptions="Center" Clicked="OnStartTurnButtonClicked"/>
+                <Button x:Name="EndTurnButton" Text="End Turn" IsVisible="False"  HorizontalOptions="Center" Clicked="OnEndTurnButtonClicked"/>
             </StackLayout>
 
             <StackLayout VerticalOptions="End">
-                <Button x:Name="NewGameButton" Text="New Game" Clicked="OnNewGameButtonClicked"/>
+                <Button x:Name="NewGameButton" Text="New Game"  HorizontalOptions="Center" Clicked="OnNewGameButtonClicked"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

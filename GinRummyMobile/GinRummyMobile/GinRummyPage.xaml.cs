@@ -22,15 +22,12 @@ namespace GinRummyMobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GinRummyPage : ContentPage
     {
-        //Deck stock = new Deck();
-        //Deck discard = new Deck();
         Card activeCard;
 
-        //Hand hand = new Hand();
-
         TurnPhase TurnPhase = TurnPhase.Start;
+        string LastTurnResult = string.Empty;
 
-        string cardSource = "";
+        string cardSource = string.Empty;
         int activeHandIndex = -1;
         int activeCardIndex = -1;
 
@@ -53,6 +50,7 @@ namespace GinRummyMobile
         private void RefreshLabels()
         {
             PlayerLabel.Text = $"{Game.Players[Game.ActivePlayer].Name}";
+            LastTurnResultLabel.Text = LastTurnResult;
             if (GinRummy.HasGin(Game.Players[Game.ActivePlayer].Hand))
             {
                 GameStateLabel.Text = "Gin Rummy!";
@@ -87,6 +85,12 @@ namespace GinRummyMobile
             {
                 TurnPhaseLabel.Text = $"{Game.Players[Game.ActivePlayer].Name} Start";
                 StartTurnButton.IsVisible = true;
+                EndTurnButton.IsVisible = false;
+            }
+            else if (TurnPhase == TurnPhase.Finished)
+            {
+                TurnPhaseLabel.Text = $"{Game.Players[Game.ActivePlayer].Name} Wins the Round";
+                StartTurnButton.IsVisible = false;
                 EndTurnButton.IsVisible = false;
             }
         }
@@ -158,7 +162,7 @@ namespace GinRummyMobile
             e.Data.Text = activeCard.ToString();
         }
 
-        private async void DropDiscard(object sender, DropEventArgs e)
+        private void DropDiscard(object sender, DropEventArgs e)
         {
             e.Handled = true;
             if (cardSource == "deck")
@@ -175,6 +179,10 @@ namespace GinRummyMobile
                     TurnPhase = TurnPhase.End;
                     ClearActiveCard();
                     RefreshHandImages();
+                    if (GinRummy.HasGin(Game.Players[Game.ActivePlayer].Hand))
+                    {
+                        TurnPhase = TurnPhase.Finished;
+                    }
                 }
             }
             RefreshLabels();
@@ -208,6 +216,7 @@ namespace GinRummyMobile
                 {
                     DeckImg.Source = "empty.png";
                 }
+                LastTurnResult = $"{Game.Players[Game.ActivePlayer].Name} drew from Stock";
                 return true;
             }
             else if (cardSource == "discard")
@@ -219,6 +228,7 @@ namespace GinRummyMobile
                 }
                 Game.Players[Game.ActivePlayer].Hand.Cards.Insert(handIndex, Game.Discard.Draw());
                 TurnPhase = TurnPhase.Discard;
+                string cardString = activeCard.ToLongString();
                 ClearActiveCard();
                 RefreshHandImages();
                 RefreshLabels();
@@ -230,6 +240,7 @@ namespace GinRummyMobile
                 {
                     DiscardImg.Source = $"card{Game.Discard.TopCard.Index}.png";
                 }
+                LastTurnResult = $"{Game.Players[Game.ActivePlayer].Name} drew the {cardString} from Discard";
                 return true;
             }
             else if (cardSource == "hand")
@@ -269,6 +280,9 @@ namespace GinRummyMobile
         async void OnNewGameButtonClicked(object sender, EventArgs e)
         {
             Game.StartNewGame();
+            TurnPhase = TurnPhase.Start;
+            RefreshLabels();
+            RefreshHandImages();
         }
 
         #region HandEventHandlers

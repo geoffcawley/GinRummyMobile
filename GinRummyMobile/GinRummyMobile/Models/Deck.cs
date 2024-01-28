@@ -83,6 +83,48 @@ namespace GinRummyMobile.Models
             return s;
         }
 
+        public string ToLongString()
+        {
+            string s = string.Empty;
+            switch (Rank)
+            {
+                case 1:
+                    s = "Ace";
+                    break;
+                case 11:
+                    s = "Jack";
+                    break;
+                case 12:
+                    s = "Queen";
+                    break;
+                case 13:
+                    s = "King";
+                    break;
+                default:
+                    s = Rank.ToString();
+                    break;
+            }
+
+            switch (Suit.ToUpper())
+            {
+                case "H":
+                    s += " of Hearts";
+                    break;
+                case "D":
+                    s += " of Diamonds";
+                    break;
+                case "C":
+                    s += " of Clubs";
+                    break;
+                case "S":
+                    s += " of Spades";
+                    break;
+                default:
+                    break;
+            }
+            return s;
+        }
+
         public int CompareTo(Card other)
         {
             if (other == null) return 1;
