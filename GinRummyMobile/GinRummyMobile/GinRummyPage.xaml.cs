@@ -55,6 +55,10 @@ namespace GinRummyMobile
             {
                 GameStateLabel.Text = "Gin Rummy!";
             }
+            else
+            {
+                GameStateLabel.Text = string.Empty;
+            }
 
             if (TurnPhase == TurnPhase.End)
             {
@@ -279,8 +283,9 @@ namespace GinRummyMobile
 
         async void OnNewGameButtonClicked(object sender, EventArgs e)
         {
-            Game.StartNewGame();
             TurnPhase = TurnPhase.Start;
+            Game.StartNewGame();
+            DiscardImg.Source = "empty.png";
             RefreshLabels();
             RefreshHandImages();
         }

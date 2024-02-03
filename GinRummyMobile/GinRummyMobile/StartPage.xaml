@@ -9,13 +9,13 @@
 
 
             <StackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
-                <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Label Text="Player 1 Name:"/>
-                    <Entry x:Name="Player1Name" Text="Player 1"/>
+                    <Entry x:Name="Player1Name" Text="Player 1" ClearButtonVisibility="WhileEditing"/>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Label Text="Player 2 Name:"/>
-                    <Entry x:Name="Player2Name" Text="Player 2"/>
+                    <Entry x:Name="Player2Name" Text="Player 2" ClearButtonVisibility="WhileEditing"/>
                 </StackLayout>
             </StackLayout>
 

@@ -34,11 +34,12 @@ namespace GinRummyMobile.Models
 
         public static void StartNewGame()
         {
+            Discard = new Deck();
+            Discard.Cards = new List<Card>();
+            Players[0].Hand = new Hand();
+            Players[1].Hand = new Hand();
             Stock = new Deck();
             Stock.Shuffle();
-            Discard.Cards.Clear();
-            Players[0].Hand.Cards.Clear();
-            Players[1].Hand.Cards.Clear();
             for (int i = 0; i < 10; i++)
             {
                 Players[0].Hand.Cards.Add(Stock.Draw());
