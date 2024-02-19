@@ -6,7 +6,7 @@
              NavigationPage.HasNavigationBar="false"
              BackgroundColor="#198137">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Padding="15, 30, 15, 20">
             <StackLayout VerticalOptions="FillAndExpand">
                 <Label x:Name="PlayerLabel" Text="Player 1's Turn" HorizontalOptions="Center" FontAttributes="Bold" TextColor="AntiqueWhite"/>
                 <Label x:Name="LastTurnResultLabel" Text="" HorizontalOptions="Center" FontAttributes="Bold" TextColor="AntiqueWhite"/>
@@ -18,12 +18,14 @@
                     <Image x:Name ="DeckImg" Source="back.png">
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragDeck"/>
+                            <SwipeGestureRecognizer Direction="Down" Swiped="SwipeDeck"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="DiscardImg" Source="empty.png">
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragDiscard"/>
                             <DropGestureRecognizer Drop="DropDiscard" />
+                            <SwipeGestureRecognizer Direction="Down" Swiped="SwipeDiscard"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Label Text="Discard" VerticalOptions="Center"  FontAttributes="Bold" TextColor="AntiqueWhite"/>
@@ -36,6 +38,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand0"/>
                             <DropGestureRecognizer Drop="DropHand0" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand0"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg1" Source="empty.png">
@@ -44,6 +47,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand1"/>
                             <DropGestureRecognizer Drop="DropHand1" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand1"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg2" Source="empty.png">
@@ -52,6 +56,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand2"/>
                             <DropGestureRecognizer Drop="DropHand2" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand2"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg3" Source="empty.png">
@@ -59,6 +64,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand3"/>
                             <DropGestureRecognizer Drop="DropHand3" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand3"/>
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
@@ -68,6 +74,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand4"/>
                             <DropGestureRecognizer Drop="DropHand4" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand4"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg5" Source="empty.png">
@@ -75,6 +82,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand5"/>
                             <DropGestureRecognizer Drop="DropHand5" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand5"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg6" Source="empty.png">
@@ -82,6 +90,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand6"/>
                             <DropGestureRecognizer Drop="DropHand6" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand6"/>
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
@@ -91,6 +100,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand7"/>
                             <DropGestureRecognizer Drop="DropHand7" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand7"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg8" Source="empty.png">
@@ -98,6 +108,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand8"/>
                             <DropGestureRecognizer Drop="DropHand8" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand8"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg9" Source="empty.png">
@@ -105,6 +116,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand9"/>
                             <DropGestureRecognizer Drop="DropHand9" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand9"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image x:Name="HandImg10" Source="empty.png" IsVisible="False">
@@ -112,6 +124,7 @@
                         <Image.GestureRecognizers>
                             <DragGestureRecognizer DragStarting="DragHand10"/>
                             <DropGestureRecognizer Drop="DropHand10" />
+                            <SwipeGestureRecognizer Direction="Up" Swiped="SwipeHand10"/>
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>

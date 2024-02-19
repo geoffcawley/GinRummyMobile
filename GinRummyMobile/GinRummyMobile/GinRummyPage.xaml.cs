@@ -16,7 +16,8 @@ namespace GinRummyMobile
         Draw = 1,
         Discard = 2,
         End = 3,
-        Finished = 4,
+        Won = 4,
+        Tied = 5,
     };
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -62,9 +63,19 @@ namespace GinRummyMobile
 
             if (TurnPhase == TurnPhase.End)
             {
-                TurnPhaseLabel.Text = "End Your Turn";
-                StartTurnButton.IsVisible = false;
-                EndTurnButton.IsVisible = true;
+                if (!Game.Stock.Cards.Any() && !GinRummy.HasGin(Game.Players[0].Hand) && !GinRummy.HasGin(Game.Players[1].Hand))
+                {
+                    TurnPhase = TurnPhase.Tied;
+                    TurnPhaseLabel.Text = "Game Tied";
+                    StartTurnButton.IsVisible = false;
+                    EndTurnButton.IsVisible = false;
+                }
+                else
+                {
+                    TurnPhaseLabel.Text = "End Your Turn";
+                    StartTurnButton.IsVisible = false;
+                    EndTurnButton.IsVisible = true;
+                }
             }
             else if (TurnPhase == TurnPhase.Draw)
             {
@@ -91,7 +102,7 @@ namespace GinRummyMobile
                 StartTurnButton.IsVisible = true;
                 EndTurnButton.IsVisible = false;
             }
-            else if (TurnPhase == TurnPhase.Finished)
+            else if (TurnPhase == TurnPhase.Won)
             {
                 TurnPhaseLabel.Text = $"{Game.Players[Game.ActivePlayer].Name} Wins the Round";
                 StartTurnButton.IsVisible = false;
@@ -103,6 +114,14 @@ namespace GinRummyMobile
         {
             StockLabel.Text = $"Stock ({Game.Stock.Cards.Count})";
 
+            if (Game.Discard.Cards.Any())
+            {
+                DiscardImg.Source = $"card{Game.Discard.TopCard.Index}.png";
+            }
+            else
+            {
+                DiscardImg.Source = "empty.png";
+            }
             if (TurnPhase != TurnPhase.Start)
             {
                 HandImg0.Source = $"card{Game.Players[Game.ActivePlayer].Hand.Cards[0].Index}.png";
@@ -155,6 +174,17 @@ namespace GinRummyMobile
             e.Data.Text = activeCard.ToString();
         }
 
+        private void SwipeDeck(object sender, SwipedEventArgs e)
+        {
+            if (Game.Stock.Cards.Count == 0)
+            {
+                return;
+            }
+            cardSource = "deck";
+            activeCard = Game.Stock.TopCard;
+            DropHand(0);
+        }
+
         private void DragDiscard(object sender, DragStartingEventArgs e)
         {
             if (Game.Discard.Cards.Count == 0)
@@ -166,9 +196,25 @@ namespace GinRummyMobile
             e.Data.Text = activeCard.ToString();
         }
 
+        private void SwipeDiscard(object sender, SwipedEventArgs e)
+        {
+            if (Game.Discard.Cards.Count == 0)
+            {
+                return;
+            }
+            cardSource = "discard";
+            activeCard = Game.Discard.TopCard;
+            DropHand(0);
+        }
+
         private void DropDiscard(object sender, DropEventArgs e)
         {
             e.Handled = true;
+            ProcessDropDiscard();
+        }
+
+        private void ProcessDropDiscard()
+        {
             if (cardSource == "deck")
             {
                 ClearActiveCard();
@@ -185,7 +231,7 @@ namespace GinRummyMobile
                     RefreshHandImages();
                     if (GinRummy.HasGin(Game.Players[Game.ActivePlayer].Hand))
                     {
-                        TurnPhase = TurnPhase.Finished;
+                        TurnPhase = TurnPhase.Won;
                     }
                 }
             }
@@ -199,6 +245,17 @@ namespace GinRummyMobile
             activeCard = Game.Players[Game.ActivePlayer].Hand.Cards[handIndex];
             activeHandIndex = handIndex;
             activeCardIndex = Game.Players[Game.ActivePlayer].Hand.Cards[handIndex].Index;
+            return true;
+        }
+
+        private bool SwipeHand(int handIndex)
+        {
+            if (handIndex >= Game.Players[Game.ActivePlayer].Hand.Cards.Count) { return false; }
+            cardSource = "hand";
+            activeCard = Game.Players[Game.ActivePlayer].Hand.Cards[handIndex];
+            activeHandIndex = handIndex;
+            activeCardIndex = Game.Players[Game.ActivePlayer].Hand.Cards[handIndex].Index;
+            ProcessDropDiscard();
             return true;
         }
 
@@ -296,15 +353,26 @@ namespace GinRummyMobile
             DragHand(0);
         }
 
+        private async void SwipeHand0(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(0);
+        }
+
         private async void DropHand0(object sender, DropEventArgs e)
         {
             e.Handled = true;
             DropHand(0);
         }
 
+
         private async void DragHand1(object sender, DragStartingEventArgs e)
         {
             DragHand(1);
+        }
+
+        private async void SwipeHand1(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(1);
         }
 
         private async void DropHand1(object sender, DropEventArgs e)
@@ -313,9 +381,15 @@ namespace GinRummyMobile
             DropHand(1);
         }
 
+
         private async void DragHand2(object sender, DragStartingEventArgs e)
         {
             DragHand(2);
+        }
+
+        private async void SwipeHand2(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(2);
         }
 
         private async void DropHand2(object sender, DropEventArgs e)
@@ -324,9 +398,15 @@ namespace GinRummyMobile
             DropHand(2);
         }
 
+
         private async void DragHand3(object sender, DragStartingEventArgs e)
         {
             DragHand(3);
+        }
+
+        private async void SwipeHand3(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(3);
         }
 
         private async void DropHand3(object sender, DropEventArgs e)
@@ -335,9 +415,15 @@ namespace GinRummyMobile
             DropHand(3);
         }
 
+
         private async void DragHand4(object sender, DragStartingEventArgs e)
         {
             DragHand(4);
+        }
+
+        private async void SwipeHand4(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(4);
         }
 
         private async void DropHand4(object sender, DropEventArgs e)
@@ -346,9 +432,15 @@ namespace GinRummyMobile
             DropHand(4);
         }
 
+
         private async void DragHand5(object sender, DragStartingEventArgs e)
         {
             DragHand(5);
+        }
+
+        private async void SwipeHand5(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(5);
         }
 
         private async void DropHand5(object sender, DropEventArgs e)
@@ -357,9 +449,15 @@ namespace GinRummyMobile
             DropHand(5);
         }
 
+
         private async void DragHand6(object sender, DragStartingEventArgs e)
         {
             DragHand(6);
+        }
+
+        private async void SwipeHand6(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(6);
         }
 
         private async void DropHand6(object sender, DropEventArgs e)
@@ -368,9 +466,15 @@ namespace GinRummyMobile
             DropHand(6);
         }
 
+
         private async void DragHand7(object sender, DragStartingEventArgs e)
         {
             DragHand(7);
+        }
+
+        private async void SwipeHand7(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(7);
         }
 
         private async void DropHand7(object sender, DropEventArgs e)
@@ -379,9 +483,15 @@ namespace GinRummyMobile
             DropHand(7);
         }
 
+
         private async void DragHand8(object sender, DragStartingEventArgs e)
         {
             DragHand(8);
+        }
+
+        private async void SwipeHand8(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(8);
         }
 
         private async void DropHand8(object sender, DropEventArgs e)
@@ -390,9 +500,15 @@ namespace GinRummyMobile
             DropHand(8);
         }
 
+
         private async void DragHand9(object sender, DragStartingEventArgs e)
         {
             DragHand(9);
+        }
+
+        private async void SwipeHand9(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(9);
         }
 
         private async void DropHand9(object sender, DropEventArgs e)
@@ -401,9 +517,15 @@ namespace GinRummyMobile
             DropHand(9);
         }
 
+
         private async void DragHand10(object sender, DragStartingEventArgs e)
         {
             DragHand(10);
+        }
+
+        private async void SwipeHand10(object sender, SwipedEventArgs e)
+        {
+            SwipeHand(10);
         }
 
         private async void DropHand10(object sender, DropEventArgs e)

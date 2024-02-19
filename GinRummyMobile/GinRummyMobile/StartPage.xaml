@@ -5,17 +5,17 @@
              Shell.NavBarIsVisible="False"
              NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
-        <Grid>
+        <Grid Padding="10, 15">
 
 
-            <StackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Label Text="Player 1 Name:"/>
-                    <Entry x:Name="Player1Name" Text="Player 1" ClearButtonVisibility="WhileEditing"/>
+                    <Label Text="Player 1 Name:" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Entry x:Name="Player1Name" Text="Player 1" ClearButtonVisibility="WhileEditing" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Label Text="Player 2 Name:"/>
-                    <Entry x:Name="Player2Name" Text="Player 2" ClearButtonVisibility="WhileEditing"/>
+                    <Label Text="Player 2 Name:" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Entry x:Name="Player2Name" Text="Player 2" ClearButtonVisibility="WhileEditing" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                 </StackLayout>
             </StackLayout>
 

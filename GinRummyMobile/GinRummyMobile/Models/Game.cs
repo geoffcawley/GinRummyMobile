@@ -40,6 +40,8 @@ namespace GinRummyMobile.Models
             Players[1].Hand = new Hand();
             Stock = new Deck();
             Stock.Shuffle();
+            Discard.Cards.Add(Stock.Draw());
+
             for (int i = 0; i < 10; i++)
             {
                 Players[0].Hand.Cards.Add(Stock.Draw());
